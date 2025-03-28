@@ -48,3 +48,30 @@ pid_t	my_getpid(void)
 	return ((pid_t)atoi(buf));
 }
 
+void	update_line(char *arg, t_env **env)
+{
+	t_env	*temp;
+	int		i;
+	char	*var_name;
+	char	*value;
+
+	temp = *env;
+	i = 0;
+	while (arg[i] && arg[i] != '=')
+		i++;
+	var_name = ft_strndup(arg, i);
+	value = ft_strdup(ft_strchr(arg, '=') + 1);
+	while (temp)
+	{
+		if (ft_strcmp(var_name, temp->name) == 0)
+		{
+			free(temp->value);
+			temp->value = value;
+			setenv(var_name, value, 1);
+		}
+		temp = temp->next;
+	}
+	free(var_name);
+}
+
+
