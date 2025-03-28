@@ -1,15 +1,13 @@
 setenv :
 
-int	my_setenv(const char *name, const char *value, int overwrite)
+int	my_setenv(t_env **env, const char *name, const char *value, int overwrite)
 {
 	t_env	*curr;
-	t_env	*new_var;
-	int		name_len;
+	t_env	*new_node;
 
-	if (!name || !value)
+	if (name == NULL || value == NULL)
 		return (-1);
-	name_len = ft_strlen(name);
-	curr = g_ms_state.internal_env;
+	curr = *env;
 	while (curr)
 	{
 		if (ft_strcmp(curr->name, name) == 0)
@@ -23,21 +21,15 @@ int	my_setenv(const char *name, const char *value, int overwrite)
 		}
 		curr = curr->next;
 	}
-	new_var = malloc(sizeof(t_env));
-	if (!new_var)
+	new_node = malloc(sizeof(t_env));
+	if (new_node == NULL)
 		return (-1);
-	new_var->name = ft_strdup(name);
-	new_var->value = ft_strdup(value);
-	new_var->next = g_ms_state.internal_env;
-	g_ms_state.internal_env = new_var;
+	new_node->name = ft_strdup(name);
+	new_node->value = ft_strdup(value);
+	new_node->next = *env;
+	*env = new_node;
 	return (0);
 }
-
-getpid :
-
-#include <fcntl.h>
-#include <unistd.h>
-#include <stdlib.h>
 
 pid_t	my_getpid(void)
 {
